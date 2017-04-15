@@ -10,6 +10,16 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    manifest {
+        attributes "Main-Class": "com.slackuserpresencemanager.Main"
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 dependencies {
     // https://mvnrepository.com/artifact/net.java.dev.jna/jna-platform
     compile group: 'net.java.dev.jna', name: 'jna-platform', version: '4.4.0'
