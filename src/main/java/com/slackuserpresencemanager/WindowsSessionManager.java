@@ -19,6 +19,7 @@ import com.sun.jna.platform.win32.WinUser.WindowProc;
 import org.apache.http.client.fluent.Request;
 
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Created by Tharaka on 4/15/2017.
@@ -36,12 +37,36 @@ public class WindowsSessionManager implements WindowProc {
 		WindowsSessionManager.slackToken = slackToken;
 	}
 
+	private static String awayMessage;
+
+	public static String getAwayMessage () {
+		return awayMessage;
+	}
+
+	public static void setAwayMessage (String awayMessage) {
+		WindowsSessionManager.awayMessage = awayMessage;
+	}
+
+	private static String awayEmoji;
+
+	public static String getAwayEmoji () {
+		return awayEmoji;
+	}
+
+	public static void setAwayEmoji (String awayEmoji) {
+		WindowsSessionManager.awayEmoji = awayEmoji;
+	}
+
 	/**
 	 * Instantiates a new win32 window test.
 	 */
-	public WindowsSessionManager () {
+	public WindowsSessionManager (Properties properties) {
+		setSlackToken(properties.getProperty("token"));
+		setAwayMessage(properties.getProperty("away-message", "AFK"));
+		setAwayEmoji(properties.getProperty("away-emoji", "palm_tree"));
+
 		// define new window class
-		String windowClass = new String("MyWindowClass");
+		String windowClass = "MyWindowClass";
 		HMODULE hInst = Kernel32.INSTANCE.GetModuleHandle("");
 
 		WNDCLASSEX wClass = new WNDCLASSEX();
@@ -211,7 +236,7 @@ public class WindowsSessionManager implements WindowProc {
 	 */
 	protected void onMachineLocked (int sessionId) {
 		try {
-			Request.Get("https://slack.com/api/users.profile.set?token=".concat(getSlackToken()).concat("&profile=%7B%22status_text%22%3A%20%22Away%22%2C%22status_emoji%22%3A%20%22%3Amountain_railway%3A%22%7D"))
+			Request.Get("https://slack.com/api/users.profile.set?token=".concat(getSlackToken()).concat("&profile=%7B%22status_text%22%3A%20%22").concat(getAwayMessage()).concat("%22%2C%22status_emoji%22%3A%20%22%3A").concat(getAwayEmoji()).concat("%3A%22%7D"))
 					.connectTimeout(1000)
 					.socketTimeout(1000)
 					.execute().returnContent().asString();
