@@ -231,11 +231,11 @@ public class WindowsSessionManager implements WindowProc {
 	 */
 	protected void onMachineUnlocked (int sessionId) {
 		try {
-			Request.Get("https://slack.com/api/users.profile.set?token=xoxp-15420270464-134292033843-169723643684-4b9df4ede87b307611669da3fcf9b252&profile=%7B%22status_text%22%3A%20%22%22%2C%22status_emoji%22%3A%20%22%22%7D")
+			Request.Get("https://slack.com/api/users.profile.set?token=".concat(getSlackToken()).concat("&profile=%7B%22status_text%22%3A%20%22%22%2C%22status_emoji%22%3A%20%22%22%7D"))
 					.connectTimeout(1000)
 					.socketTimeout(1000)
 					.execute().returnContent().asString();
-			Request.Get("https://slack.com/api/users.setPresence?token=xoxp-15420270464-134292033843-169723643684-4b9df4ede87b307611669da3fcf9b252&presence=auto")
+			Request.Get("https://slack.com/api/users.setPresence?token=".concat(getSlackToken()).concat("&presence=auto"))
 					.connectTimeout(1000)
 					.socketTimeout(1000)
 					.execute().returnContent().asString();
