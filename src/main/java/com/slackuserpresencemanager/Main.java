@@ -24,7 +24,6 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		WindowsSessionManager.setSlackToken(properties.getProperty("token"));
-		new WindowsSessionManager();
+		new WindowsSessionManager(properties);
 	}
 }
