@@ -19,6 +19,9 @@ public class WindowsSessionManager implements WindowProc {
     private static final Logger LOGGER = LogManager.getLogger(WindowsSessionManager.class);
 
     WindowsSessionManager() {
+        HTTPManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"));
+        HTTPManager.updatePresence("auto");
+
         // define new window class
         String windowClass = "MyWindowClass";
         HMODULE hInst = Kernel32.INSTANCE.GetModuleHandle("");
@@ -79,10 +82,6 @@ public class WindowsSessionManager implements WindowProc {
                 this.onConsoleDisconnect(lParam.intValue());
                 break;
             }
-            case Wtsapi32.WTS_SESSION_LOGON: {
-                this.onMachineLogon();
-                break;
-            }
             case Wtsapi32.WTS_SESSION_LOGOFF: {
                 this.onMachineLogoff();
                 break;
@@ -119,10 +118,5 @@ public class WindowsSessionManager implements WindowProc {
     private void onMachineLogoff() {
         HTTPManager.updateStatus(Main.getProperty("computer-shutdown-message"), Main.getProperty("computer-shutdown-emoji"));
         HTTPManager.updatePresence("away");
-    }
-
-    private void onMachineLogon() {
-        HTTPManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"));
-        HTTPManager.updatePresence("auto");
     }
 }
