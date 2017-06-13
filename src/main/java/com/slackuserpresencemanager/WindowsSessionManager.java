@@ -26,6 +26,19 @@ public class WindowsSessionManager implements WindowProc {
         String windowClass = "MyWindowClass";
         HMODULE hInst = Kernel32.INSTANCE.GetModuleHandle("");
 
+        WinUser.WNDCLASSEX wClass = new WinUser.WNDCLASSEX();
+        wClass.hInstance = hInst;
+        wClass.lpfnWndProc = WindowsSessionManager.this;
+        wClass.lpszClassName = windowClass;
+
+        // register window class
+        User32.INSTANCE.RegisterClassEx(wClass);
+
+        int lastError = Kernel32.INSTANCE.GetLastError();
+        if (lastError != 0) {
+            throw new RuntimeException("Encountered error with code: " + lastError);
+        }
+
         // create new window
         HWND hWnd = User32.INSTANCE
                 .CreateWindowEx(
@@ -34,7 +47,7 @@ public class WindowsSessionManager implements WindowProc {
                         "My hidden helper window, used only to catch the windows events",
                         0, 0, 0, 0, 0,
                         null, null, hInst, null);
-        int lastError = Kernel32.INSTANCE.GetLastError();
+        lastError = Kernel32.INSTANCE.GetLastError();
         if (lastError != 0) {
             throw new RuntimeException("Encountered error with code: " + lastError);
         }
