@@ -42,7 +42,7 @@ class HTTPManager {
     static void updateStatus(final String message, final String emoji) {
         Map<String, String> statusInfo = new HashMap<>();
         statusInfo.put("status_text", message);
-        statusInfo.put("status_emoji", emoji);
+        statusInfo.put("status_emoji", ":".concat(emoji).concat(":"));
         update(RESOURCE_STATUS, "profile", new Gson().toJson(statusInfo));
     }
 

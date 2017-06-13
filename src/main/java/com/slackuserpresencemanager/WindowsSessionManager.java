@@ -95,10 +95,6 @@ public class WindowsSessionManager implements WindowProc {
                 this.onConsoleDisconnect(lParam.intValue());
                 break;
             }
-            case Wtsapi32.WTS_SESSION_LOGOFF: {
-                this.onMachineLogoff();
-                break;
-            }
             case Wtsapi32.WTS_SESSION_LOCK: {
                 this.onMachineLocked();
                 break;
@@ -126,10 +122,5 @@ public class WindowsSessionManager implements WindowProc {
     private void onMachineUnlocked() {
         HTTPManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"));
         HTTPManager.updatePresence("auto");
-    }
-
-    private void onMachineLogoff() {
-        HTTPManager.updateStatus(Main.getProperty("computer-shutdown-message"), Main.getProperty("computer-shutdown-emoji"));
-        HTTPManager.updatePresence("away");
     }
 }
