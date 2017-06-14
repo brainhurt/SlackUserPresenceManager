@@ -27,13 +27,15 @@ class HTTPManager {
 
     private static void update(final String resource, final String key, final String value) {
         try {
-            URIBuilder uriBuilder = new URIBuilder(BASE_URL.concat(resource));
-            uriBuilder.addParameter("token", Main.getProperty("token"));
-            uriBuilder.addParameter(key, value);
-            Request.Get(uriBuilder.build())
-                    .connectTimeout(1000)
-                    .socketTimeout(1000)
-                    .execute();
+            for (String token : Main.getProperty("tokens").split(",")) {
+                URIBuilder uriBuilder = new URIBuilder(BASE_URL.concat(resource));
+                uriBuilder.addParameter("token", token);
+                uriBuilder.addParameter(key, value);
+                Request.Get(uriBuilder.build())
+                        .connectTimeout(1000)
+                        .socketTimeout(1000)
+                        .execute();
+            }
         } catch (URISyntaxException | IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
