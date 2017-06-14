@@ -1,5 +1,5 @@
 group 'com.SlackUserPresenceManager'
-version '1.0'
+version '1.1-SNAPSHOT'
 
 apply plugin: 'java'
 
@@ -17,6 +17,11 @@ jar {
 
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    copy {
+        from "SlackUserPresenceManager.properties"
+        into "build/libs"
     }
 }
 
