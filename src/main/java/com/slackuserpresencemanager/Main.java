@@ -3,9 +3,7 @@ package com.slackuserpresencemanager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -16,7 +14,7 @@ public class Main {
 
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
-    private static final String PROPERTY_FILE_NAME = "build.properties";
+    private static final String PROPERTY_FILE_NAME = "SlackUserPresenceManager.properties";
 
     private static Properties properties = new Properties();
 
@@ -25,10 +23,11 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        InputStream inputStream = Main.class.getClassLoader().getResourceAsStream(PROPERTY_FILE_NAME);
-        if (inputStream == null) {
-            throw new FileNotFoundException("The config.properties file was not found!");
+        File file = new File(PROPERTY_FILE_NAME);
+        if (!file.exists()) {
+            throw new FileNotFoundException(PROPERTY_FILE_NAME.concat(" was not found!"));
         }
+        FileInputStream inputStream = new FileInputStream(file);
         properties.load(inputStream);
         new WindowsSessionManager();
     }
