@@ -8,7 +8,7 @@ How to use:
 **The properties file has to be in the same folder as the jar file!**
 4) Put the token in the src/main/resource/build.properties file in the resources file. This would also be the place where you update your custom statuses and emojis.
 **Multiple tokens should be comma separated.**
-5) Run the jar file by executing the following command: "java -jar SlackUserPresenceManager-1.0.jar"
+5) Run the jar file by executing the following command: "java -jar SlackUserPresenceManager-1.x.jar"
 
 This will start a listener which is going to listen on your windows session change events. Currently locking and unlocking will trigger your status and presence according to the slack token provided.
 
