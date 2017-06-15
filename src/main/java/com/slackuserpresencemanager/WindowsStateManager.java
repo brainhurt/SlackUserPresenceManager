@@ -7,7 +7,7 @@ import com.slackuserpresencemanager.slack.Presence;
  * Project: SlackUserPresenceManager
  */
 class WindowsStateManager {
-    static void RegisterShutdownListener() {
+    static void registerShutdownListener() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             HTTPManager.updatePresence(Presence.AWAY);
             HTTPManager.updateStatus(Main.getProperty("logged-off-message"), Main.getProperty("logged-off-emoji"));
