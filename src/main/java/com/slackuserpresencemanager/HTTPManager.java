@@ -1,6 +1,7 @@
 package com.slackuserpresencemanager;
 
 import com.google.gson.Gson;
+import com.slackuserpresencemanager.slack.Presence;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +16,7 @@ import java.util.Map;
  * Created by Tharaka on 6/12/2017.
  * For project: SlackUserPresenceManager
  */
-class HTTPManager {
+public class HTTPManager {
 
     private final static Logger LOGGER = LogManager.getLogger(HTTPManager.class);
 
@@ -41,14 +42,14 @@ class HTTPManager {
         }
     }
 
-    static void updateStatus(final String message, final String emoji) {
+    public static void updateStatus(final String message, final String emoji) {
         Map<String, String> statusInfo = new HashMap<>();
         statusInfo.put("status_text", message);
         statusInfo.put("status_emoji", ":".concat(emoji).concat(":"));
         update(RESOURCE_STATUS, "profile", new Gson().toJson(statusInfo));
     }
 
-    static void updatePresence(final String presence) {
-        update(RESOURCE_PRESENCE, "presence", presence);
+    public static void updatePresence(final Presence presence) {
+        update(RESOURCE_PRESENCE, "presence", presence.getPresenceString());
     }
 }

@@ -1,5 +1,6 @@
 package com.slackuserpresencemanager;
 
+import com.slackuserpresencemanager.slack.Presence;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.*;
@@ -20,7 +21,7 @@ public class WindowsSessionManager implements WindowProc {
 
     WindowsSessionManager() {
         HTTPManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"));
-        HTTPManager.updatePresence("auto");
+        HTTPManager.updatePresence(Presence.AUTO);
 
         // define new window class
         String windowClass = "MyWindowClass";
@@ -116,11 +117,11 @@ public class WindowsSessionManager implements WindowProc {
 
     private void onMachineLocked() {
         HTTPManager.updateStatus(Main.getProperty("away-message"), Main.getProperty("away-emoji"));
-        HTTPManager.updatePresence("away");
+        HTTPManager.updatePresence(Presence.AWAY);
     }
 
     private void onMachineUnlocked() {
         HTTPManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"));
-        HTTPManager.updatePresence("auto");
+        HTTPManager.updatePresence(Presence.AUTO);
     }
 }

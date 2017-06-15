@@ -29,6 +29,7 @@ public class Main {
         }
         FileInputStream inputStream = new FileInputStream(file);
         properties.load(inputStream);
+        WindowsStateManager.registerShutdownListener();
         new WindowsSessionManager();
     }
 }
