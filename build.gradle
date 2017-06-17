@@ -2,6 +2,7 @@ group 'com.SlackUserPresenceManager'
 version '1.2-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'idea'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -25,6 +26,13 @@ jar {
     }
 }
 
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
 dependencies {
     compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.3'
     compile group: 'com.google.code.gson', name: 'gson', version: '1.7.2'
@@ -33,6 +41,6 @@ dependencies {
 }
 
 task getDeps(type: Copy) {
-    from sourceSets.main.runtimeClasspath
+    from configurations.compile
     into 'libs/'
 }
