@@ -1,7 +1,7 @@
-package com.slackuserpresencemanager
+package com.slackuserpresencemanager.slack
 
 import com.google.gson.Gson
-import com.slackuserpresencemanager.slack.Presence
+import com.slackuserpresencemanager.Main
 import org.apache.http.client.fluent.Request
 import org.apache.http.client.utils.URIBuilder
 import org.apache.logging.log4j.LogManager
@@ -14,9 +14,9 @@ import java.util.HashMap
  * Created by Tharaka on 6/12/2017.
  * For project: SlackUserPresenceManager
  */
-object HTTPManager {
+object SlackApiManager {
 
-    private val LOGGER = LogManager.getLogger(HTTPManager::class.java)
+    private val LOGGER = LogManager.getLogger(SlackApiManager::class.java)
 
     private val BASE_URL = "https://slack.com/api/"
 

@@ -16,16 +16,11 @@ buildscript {
 
 jar {
     manifest {
-        attributes "Main-Class": "com.slackuserpresencemanager.Main"
+        attributes "Main-Class": "com.slackuserpresencemanager.MainKt"
     }
 
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-
-    copy {
-        from "SlackUserPresenceManager.properties"
-        into "build/libs"
     }
 }
 
@@ -41,6 +36,8 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.3'
+    compile group: 'com.google.code.gson', name: 'gson', version: '1.7.2'
     compile group: 'net.java.dev.jna', name: 'jna-platform', version: '4.4.0'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
 }

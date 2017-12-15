@@ -1,6 +1,8 @@
-package com.slackuserpresencemanager
+package com.slackuserpresencemanager.listeners
 
+import com.slackuserpresencemanager.Main
 import com.slackuserpresencemanager.slack.Presence
+import com.slackuserpresencemanager.slack.SlackApiManager
 import com.sun.jna.platform.win32.Kernel32
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef.*
@@ -9,7 +11,6 @@ import com.sun.jna.platform.win32.WinUser.MSG
 import com.sun.jna.platform.win32.WinUser.WindowProc
 import com.sun.jna.platform.win32.Wtsapi32
 import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 
 /**
  * Created by Tharaka on 4/15/2017.
@@ -18,8 +19,8 @@ import org.apache.logging.log4j.Logger
 class WindowsSessionManager internal constructor() : WindowProc {
 
     init {
-        HTTPManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
-        HTTPManager.updatePresence(Presence.AUTO)
+        SlackApiManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
+        SlackApiManager.updatePresence(Presence.AUTO)
 
         // define new window class
         val windowClass = "MyWindowClass"
@@ -107,17 +108,16 @@ class WindowsSessionManager internal constructor() : WindowProc {
     }
 
     private fun onMachineLocked() {
-        HTTPManager.updateStatus(Main.getProperty("away-message"), Main.getProperty("away-emoji"))
-        HTTPManager.updatePresence(Presence.AWAY)
+        SlackApiManager.updateStatus(Main.getProperty("away-message"), Main.getProperty("away-emoji"))
+        SlackApiManager.updatePresence(Presence.AWAY)
     }
 
     private fun onMachineUnlocked() {
-        HTTPManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
-        HTTPManager.updatePresence(Presence.AUTO)
+        SlackApiManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
+        SlackApiManager.updatePresence(Presence.AUTO)
     }
 
     companion object {
-
         private val LOGGER = LogManager.getLogger(WindowsSessionManager::class.java)
     }
 }
