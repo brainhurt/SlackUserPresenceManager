@@ -2,27 +2,16 @@ group 'com.SlackUserPresenceManager'
 version '1.2-SNAPSHOT'
 
 apply plugin: 'java'
-apply plugin: 'idea'
+apply plugin: 'kotlin'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-idea {
-    module {
-        downloadJavadoc = true
-        downloadSources = true
+buildscript {
+    ext.kotlin_version = '1.2.0'
+    repositories {
+        mavenCentral()
     }
-}
-
-dependencies {
-    compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.3'
-    compile group: 'com.google.code.gson', name: 'gson', version: '1.7.2'
-    compile group: 'net.java.dev.jna', name: 'jna-platform', version: '4.4.0'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
 }
 
 jar {
@@ -40,7 +29,18 @@ jar {
     }
 }
 
-task getDeps(type: Copy) {
-    from configurations.compile
-    into 'libs/'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
+compileTestKotlin.kotlinOptions.jvmTarget = "1.8"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile group: 'net.java.dev.jna', name: 'jna-platform', version: '4.4.0'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
 }
