@@ -8,7 +8,7 @@ import com.slackuserpresencemanager.slack.SlackApiManager
  * Created by Christian on 6/14/2017.
  * Project: SlackUserPresenceManager
  */
-class WindowsStateManager {
+object WindowsStateManager {
 
     init {
         registerShutdownListener()

@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
-import java.util.*
+import java.util.Properties
 
 /**
  * Created by Tharaka on 4/15/2017.
@@ -21,8 +21,8 @@ class Main {
         }
         val inputStream = FileInputStream(file)
         properties.load(inputStream)
-        WindowsStateManager()
-        WindowsSessionManager()
+        WindowsStateManager
+        WindowsSessionManager
     }
 
     companion object {

@@ -5,7 +5,6 @@ import com.slackuserpresencemanager.Main
 import org.apache.http.client.fluent.Request
 import org.apache.http.client.utils.URIBuilder
 import org.apache.logging.log4j.LogManager
-
 import java.io.IOException
 import java.net.URISyntaxException
 import java.util.HashMap
@@ -31,8 +30,8 @@ object SlackApiManager {
                 uriBuilder.addParameter("token", token)
                 uriBuilder.addParameter(key, value)
                 Request.Get(uriBuilder.build())
-                        .connectTimeout(1000)
-                        .socketTimeout(1000)
+                        .connectTimeout(5000)
+                        .socketTimeout(5000)
                         .execute()
             }
         } catch (e: URISyntaxException) {

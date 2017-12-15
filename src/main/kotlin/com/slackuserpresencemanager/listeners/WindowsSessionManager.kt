@@ -5,7 +5,10 @@ import com.slackuserpresencemanager.slack.Presence
 import com.slackuserpresencemanager.slack.SlackApiManager
 import com.sun.jna.platform.win32.Kernel32
 import com.sun.jna.platform.win32.User32
-import com.sun.jna.platform.win32.WinDef.*
+import com.sun.jna.platform.win32.WinDef.HWND
+import com.sun.jna.platform.win32.WinDef.LPARAM
+import com.sun.jna.platform.win32.WinDef.LRESULT
+import com.sun.jna.platform.win32.WinDef.WPARAM
 import com.sun.jna.platform.win32.WinUser
 import com.sun.jna.platform.win32.WinUser.MSG
 import com.sun.jna.platform.win32.WinUser.WindowProc
@@ -16,7 +19,9 @@ import org.apache.logging.log4j.LogManager
  * Created by Tharaka on 4/15/2017.
  * Project: SlackUserPresenceManager
  */
-class WindowsSessionManager internal constructor() : WindowProc {
+object WindowsSessionManager : WindowProc {
+
+    private val LOGGER = LogManager.getLogger(WindowsSessionManager::class.java)
 
     init {
         SlackApiManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
@@ -115,9 +120,5 @@ class WindowsSessionManager internal constructor() : WindowProc {
     private fun onMachineUnlocked() {
         SlackApiManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
         SlackApiManager.updatePresence(Presence.AUTO)
-    }
-
-    companion object {
-        private val LOGGER = LogManager.getLogger(WindowsSessionManager::class.java)
     }
 }
