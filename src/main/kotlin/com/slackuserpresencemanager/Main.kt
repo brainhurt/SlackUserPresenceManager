@@ -12,7 +12,17 @@ import java.util.Properties
  * Created by Tharaka on 4/15/2017.
  * Project: SlackUserPresenceManager
  */
-class Main {
+object Main {
+
+    private val LOGGER = LogManager.getLogger(Main::class.java)
+
+    private val PROPERTY_FILE_NAME = "SlackUserPresenceManager.properties"
+
+    private val properties = Properties()
+
+    fun getProperty(key: String): String {
+        return properties.getProperty(key, "")
+    }
 
     init {
         val file = File(PROPERTY_FILE_NAME)
@@ -24,20 +34,8 @@ class Main {
         WindowsStateManager
         WindowsSessionManager
     }
-
-    companion object {
-        private val LOGGER = LogManager.getLogger(Main::class.java)
-
-        private val PROPERTY_FILE_NAME = "SlackUserPresenceManager.properties"
-
-        private val properties = Properties()
-
-        fun getProperty(key: String): String {
-            return properties.getProperty(key, "")
-        }
-    }
 }
 
 fun main(args: Array<String>) {
-    Main()
+    Main
 }
