@@ -35,6 +35,8 @@ object SlackApiManager {
             set()
         }
 
+    var meetingSubject = ""
+
     var isLoggedOff = false
         set(value) {
             field = value
@@ -81,7 +83,7 @@ object SlackApiManager {
     }
 
     private fun setInMeeting() {
-        SlackApiManager.updateStatus(Main.getProperty("meeting-message"), Main.getProperty("meeting-emoji"))
+        SlackApiManager.updateStatus(Main.getProperty("meeting-message").replace("###MEETING_SUBJECT###", meetingSubject), Main.getProperty("meeting-emoji"))
         SlackApiManager.updatePresence(Presence.AWAY)
     }
 

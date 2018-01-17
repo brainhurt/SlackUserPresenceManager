@@ -28,6 +28,7 @@ object ExchangeManager {
         Thread {
             while (true) {
                 val appointment = findNextAppointment() ?: break // if you don't have an appointment for the next 5 days, you probably don't need this module.
+                SlackApiManager.meetingSubject = appointment.subject
                 val currentTime = Date()
                 val startTime = appointment.start
                 val endTime = appointment.end
