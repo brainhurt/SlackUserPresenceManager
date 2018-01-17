@@ -23,6 +23,24 @@ object SlackApiManager {
 
     private val RESOURCE_PRESENCE = "users.setPresence"
 
+    var isAfk: Boolean = false
+        set(value) {
+            field = value
+            set()
+        }
+
+    var isInMeeeting = false
+        set(value) {
+            field = value
+            set()
+        }
+
+    var isLoggedOff = false
+        set(value) {
+            field = value
+            set()
+        }
+
     private fun update(resource: String, key: String, value: String) {
         try {
             for (token in Main.getProperty("tokens").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
@@ -39,17 +57,45 @@ object SlackApiManager {
         } catch (e: IOException) {
             LOGGER.error(e.message, e)
         }
-
     }
 
-    fun updateStatus(message: String, emoji: String) {
+    private fun updateStatus(message: String, emoji: String) {
         val statusInfo = HashMap<String, String>()
         statusInfo.put("status_text", message)
         statusInfo.put("status_emoji", ":$emoji:")
         update(RESOURCE_STATUS, "profile", Gson().toJson(statusInfo))
     }
 
-    fun updatePresence(presence: Presence) {
+    private fun updatePresence(presence: Presence) {
         update(RESOURCE_PRESENCE, "presence", presence.presenceString)
+    }
+
+    private fun setAFK() {
+        SlackApiManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
+        SlackApiManager.updatePresence(Presence.AWAY)
+    }
+
+    private fun setAvailable() {
+        SlackApiManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
+        SlackApiManager.updatePresence(Presence.AUTO)
+    }
+
+    private fun setInMeeting() {
+        SlackApiManager.updateStatus(Main.getProperty("meeting-message"), Main.getProperty("meeting-emoji"))
+        SlackApiManager.updatePresence(Presence.AWAY)
+    }
+
+    private fun setLoggedOff() {
+        SlackApiManager.updatePresence(Presence.AWAY)
+        SlackApiManager.updateStatus(Main.getProperty("logged-off-message"), Main.getProperty("logged-off-emoji"))
+    }
+
+    private fun set() {
+        when {
+            isLoggedOff -> setLoggedOff()
+            isAfk -> setAFK()
+            isInMeeeting -> setInMeeting()
+            else -> setAvailable()
+        }
     }
 }

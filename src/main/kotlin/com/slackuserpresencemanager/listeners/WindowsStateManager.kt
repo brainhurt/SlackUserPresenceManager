@@ -1,7 +1,5 @@
 package com.slackuserpresencemanager.listeners
 
-import com.slackuserpresencemanager.Main
-import com.slackuserpresencemanager.slack.Presence
 import com.slackuserpresencemanager.slack.SlackApiManager
 
 /**
@@ -16,8 +14,7 @@ object WindowsStateManager {
 
     private fun registerShutdownListener() {
         Runtime.getRuntime().addShutdownHook(Thread {
-            SlackApiManager.updatePresence(Presence.AWAY)
-            SlackApiManager.updateStatus(Main.getProperty("logged-off-message"), Main.getProperty("logged-off-emoji"))
+            SlackApiManager.isLoggedOff = true
         })
     }
 }
