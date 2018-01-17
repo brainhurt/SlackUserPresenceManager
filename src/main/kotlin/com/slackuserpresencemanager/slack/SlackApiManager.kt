@@ -5,8 +5,6 @@ import com.slackuserpresencemanager.Main
 import org.apache.http.client.fluent.Request
 import org.apache.http.client.utils.URIBuilder
 import org.apache.logging.log4j.LogManager
-import java.io.IOException
-import java.net.URISyntaxException
 import java.util.HashMap
 
 /**
@@ -24,22 +22,25 @@ object SlackApiManager {
     private val RESOURCE_PRESENCE = "users.setPresence"
 
     private fun update(resource: String, key: String, value: String) {
-        try {
-            for (token in Main.getProperty("tokens").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
-                val uriBuilder = URIBuilder(BASE_URL + resource)
-                uriBuilder.addParameter("token", token)
-                uriBuilder.addParameter(key, value)
-                Request.Get(uriBuilder.build())
-                        .connectTimeout(5000)
-                        .socketTimeout(5000)
-                        .execute()
+        for (token in Main.getProperty("tokens").split(",")) {
+            val uriBuilder = URIBuilder(BASE_URL + resource)
+            uriBuilder.addParameter("token", token)
+            uriBuilder.addParameter(key, value)
+            for (i in 1..3) {
+                try {
+                    Request.Get(uriBuilder.build())
+                            .connectTimeout(5000)
+                            .socketTimeout(5000)
+                            .execute()
+                    break
+                } catch (e: Exception) {
+                    LOGGER.error("Caught error ${e.localizedMessage}, but moving onwards... [Retry attempt = $i]", e)
+                    if (i != 3) {
+                        Thread.sleep(10000)
+                    }
+                }
             }
-        } catch (e: URISyntaxException) {
-            LOGGER.error(e.message, e)
-        } catch (e: IOException) {
-            LOGGER.error(e.message, e)
         }
-
     }
 
     fun updateStatus(message: String, emoji: String) {
