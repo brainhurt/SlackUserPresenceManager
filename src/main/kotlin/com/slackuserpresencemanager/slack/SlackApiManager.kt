@@ -28,7 +28,6 @@ object SlackApiManager {
             uriBuilder.addParameter(key, value)
             for (i in 1..3) {
                 try {
-                    println("attempt $i")
                     Request.Get(uriBuilder.build())
                             .connectTimeout(5000)
                             .socketTimeout(5000)
