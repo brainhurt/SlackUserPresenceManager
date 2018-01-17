@@ -73,23 +73,23 @@ object SlackApiManager {
     }
 
     private fun setAFK() {
-        SlackApiManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
-        SlackApiManager.updatePresence(Presence.AWAY)
+        updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
+        updatePresence(Presence.AWAY)
     }
 
     private fun setAvailable() {
-        SlackApiManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
-        SlackApiManager.updatePresence(Presence.AUTO)
+        updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
+        updatePresence(Presence.AUTO)
     }
 
     private fun setInMeeting() {
-        SlackApiManager.updateStatus(Main.getProperty("meeting-message").replace("###MEETING_SUBJECT###", meetingSubject), Main.getProperty("meeting-emoji"))
-        SlackApiManager.updatePresence(Presence.AWAY)
+        updateStatus(Main.getProperty("meeting-message").replace("###MEETING_SUBJECT###", meetingSubject), Main.getProperty("meeting-emoji"))
+        updatePresence(Presence.AWAY)
     }
 
     private fun setLoggedOff() {
-        SlackApiManager.updatePresence(Presence.AWAY)
-        SlackApiManager.updateStatus(Main.getProperty("logged-off-message"), Main.getProperty("logged-off-emoji"))
+        updatePresence(Presence.AWAY)
+        updateStatus(Main.getProperty("logged-off-message"), Main.getProperty("logged-off-emoji"))
     }
 
     private fun set() {
