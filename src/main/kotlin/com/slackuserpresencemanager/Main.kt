@@ -33,6 +33,7 @@ object Main {
             throw FileNotFoundException("File '$PROPERTY_FILE_NAME' was not found!")
         }
         val inputStream = FileInputStream(file)
+        properties.load(inputStream)
         WindowsStateManager
         WindowsSessionManager
         ExchangeManager
