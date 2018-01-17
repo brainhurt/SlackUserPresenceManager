@@ -1,7 +1,5 @@
 package com.slackuserpresencemanager.listeners
 
-import com.slackuserpresencemanager.Main
-import com.slackuserpresencemanager.slack.Presence
 import com.slackuserpresencemanager.slack.SlackApiManager
 import com.sun.jna.platform.win32.Kernel32
 import com.sun.jna.platform.win32.User32
@@ -24,9 +22,6 @@ object WindowsSessionManager : WindowProc {
     private val LOGGER = LogManager.getLogger(WindowsSessionManager::class.java)
 
     init {
-        SlackApiManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
-        SlackApiManager.updatePresence(Presence.AUTO)
-
         // define new window class
         val windowClass = "MyWindowClass"
         val hInst = Kernel32.INSTANCE.GetModuleHandle("")
@@ -113,12 +108,10 @@ object WindowsSessionManager : WindowProc {
     }
 
     private fun onMachineLocked() {
-        SlackApiManager.updateStatus(Main.getProperty("away-message"), Main.getProperty("away-emoji"))
-        SlackApiManager.updatePresence(Presence.AWAY)
+        SlackApiManager.isAfk = true
     }
 
     private fun onMachineUnlocked() {
-        SlackApiManager.updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
-        SlackApiManager.updatePresence(Presence.AUTO)
+        SlackApiManager.isAfk = false
     }
 }

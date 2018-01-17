@@ -21,6 +21,26 @@ object SlackApiManager {
 
     private val RESOURCE_PRESENCE = "users.setPresence"
 
+    var isAfk: Boolean = false
+        set(value) {
+            field = value
+            set()
+        }
+
+    var isInMeeeting = false
+        set(value) {
+            field = value
+            set()
+        }
+
+    var meetingSubject = ""
+
+    var isLoggedOff = false
+        set(value) {
+            field = value
+            set()
+        }
+
     private fun update(resource: String, key: String, value: String) {
         for (token in Main.getProperty("tokens").split(",")) {
             val uriBuilder = URIBuilder(BASE_URL + resource)
@@ -43,14 +63,43 @@ object SlackApiManager {
         }
     }
 
-    fun updateStatus(message: String, emoji: String) {
+    private fun updateStatus(message: String, emoji: String) {
         val statusInfo = HashMap<String, String>()
         statusInfo.put("status_text", message)
         statusInfo.put("status_emoji", ":$emoji:")
         update(RESOURCE_STATUS, "profile", Gson().toJson(statusInfo))
     }
 
-    fun updatePresence(presence: Presence) {
+    private fun updatePresence(presence: Presence) {
         update(RESOURCE_PRESENCE, "presence", presence.presenceString)
+    }
+
+    private fun setAFK() {
+        updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
+        updatePresence(Presence.AWAY)
+    }
+
+    private fun setAvailable() {
+        updateStatus(Main.getProperty("active-message"), Main.getProperty("active-emoji"))
+        updatePresence(Presence.AUTO)
+    }
+
+    private fun setInMeeting() {
+        updateStatus(Main.getProperty("meeting-message").replace("###MEETING_SUBJECT###", meetingSubject), Main.getProperty("meeting-emoji"))
+        updatePresence(Presence.AWAY)
+    }
+
+    private fun setLoggedOff() {
+        updatePresence(Presence.AWAY)
+        updateStatus(Main.getProperty("logged-off-message"), Main.getProperty("logged-off-emoji"))
+    }
+
+    private fun set() {
+        when {
+            isLoggedOff -> setLoggedOff()
+            isAfk -> setAFK()
+            isInMeeeting -> setInMeeting()
+            else -> setAvailable()
+        }
     }
 }
