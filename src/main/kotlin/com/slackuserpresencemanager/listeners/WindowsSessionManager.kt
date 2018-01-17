@@ -27,7 +27,7 @@ object WindowsSessionManager : WindowProc {
         val hInst = Kernel32.INSTANCE.GetModuleHandle("")
 
         val wClass = WinUser.WNDCLASSEX()
-        wClass.hInstance = hInst!!
+        wClass.hInstance = hInst
         wClass.lpfnWndProc = this@WindowsSessionManager
         wClass.lpszClassName = windowClass
 
