@@ -22,7 +22,7 @@ object SlackApiManager {
     private val RESOURCE_PRESENCE = "users.setPresence"
 
     private fun update(resource: String, key: String, value: String) {
-        for (token in Main.getProperty("tokens").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
+        for (token in Main.getProperty("tokens").split(",")) {
             val uriBuilder = URIBuilder(BASE_URL + resource)
             uriBuilder.addParameter("token", token)
             uriBuilder.addParameter(key, value)
